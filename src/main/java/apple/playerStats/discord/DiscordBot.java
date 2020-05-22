@@ -1,5 +1,6 @@
 package apple.playerStats.discord;
 
+import apple.playerStats.StatsMain;
 import apple.playerStats.discord.commands.CommandUpdate;
 import apple.playerStats.discord.commands.DoCommand;
 import net.dv8tion.jda.api.JDA;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.security.auth.login.LoginException;
+import java.io.*;
 import java.util.HashMap;
 
 public class DiscordBot extends ListenerAdapter {
@@ -20,10 +22,12 @@ public class DiscordBot extends ListenerAdapter {
     private static final String UPDATE = PREFIX + "update";
 
     private static final HashMap<String, DoCommand> commandMap = new HashMap<>();
-    public static String discordToken = "NjE4OTU3MDcyNjA3NzM5OTE3.Xsajwg.L9Y9MqQVCwds5OtHLmcvK9dysWs"; // my bot
+    private final static String DISCORD_TOKENT_PATH = "/config.txt"; // my bot
     public static JDA client;
 
-    public void enableDiscord() throws LoginException {
+    public void enableDiscord() throws LoginException, IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(StatsMain.class.getResourceAsStream(DISCORD_TOKENT_PATH)));
+        String discordToken = in.readLine().split("#")[0].trim();
         JDABuilder builder = new JDABuilder(discordToken);
         builder.addEventListeners(this);
         client = builder.build();

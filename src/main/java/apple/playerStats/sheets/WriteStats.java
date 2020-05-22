@@ -6,7 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class WriteStats {
     private static final String SHEET_NAME = "Sheet1";
@@ -14,12 +16,20 @@ public class WriteStats {
 
     public static void writePlayer(String discordId, String name, JSONObject playerObject) throws IOException {
         int rowToWrite = SheetsUtils.getRowFromDiscord(discordId, String.format("%s!%s:%s", SHEET_NAME, nameCol, nameCol)) - 1;
-        JSONObject playerData = (JSONObject)((JSONArray) playerObject.get("data")).get(0);
+        JSONObject playerData = (JSONObject) ((JSONArray) playerObject.get("data")).get(0);
 
 
         String range = "Sheet1!A1:B2";
         ValueRange valueRange = new ValueRange();
-        valueRange.setValues(Arrays.asList(Arrays.asList("hello", "hi"), Arrays.asList("hello1", "hi1")));
+        List<List<Object>> values = new LinkedList<>();
+        List<Object> firstList = new ArrayList<>();
+        List<Object> secondList = new ArrayList<>();
+
+
+        values.add(firstList);
+        values.add(secondList);
+
+        valueRange.setValues(values);
         SheetsConstants.sheetsValues.update(SheetsConstants.spreadSheetId, range, valueRange).setValueInputOption("USER_ENTERED").execute();
     }
 }
